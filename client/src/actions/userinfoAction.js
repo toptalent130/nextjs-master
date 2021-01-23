@@ -1,10 +1,11 @@
 import axios from 'axios';
-
+import {getSideMap} from './sidemapActions'
 import {
   CREATE_USERINFO,
   UPDATE_USERINFO,
   SET_CURRENTUSERINFO,
-  GET_ERRORS
+  GET_ERRORS,
+  GET_MAP
 } from './types';
 
 //get problems
@@ -34,6 +35,25 @@ export const createUserInfo = (userid) => dispatch => {
         })
     );
 };
+export const updateChildInfo = (data) => dispatch => {
+    axios
+      .post('/api/userinfo/updatechilddata', data)
+      .then(res => {
+        localStorage.setItem('userinfo',JSON.stringify(res.data))
+        dispatch(setCurrentUserinfo(JSON.parse(localStorage.getItem('userinfo'))));
+        dispatch(getSideMap());
+        return dispatch({
+            type: UPDATE_USERINFO,
+            payload: res.data
+        });
+    })
+    .catch(err =>
+        dispatch({
+            type: GET_ERRORS,
+            payload: err.response.data
+        })
+    );
+  };
 export const updateUserInfo = (data, history) => dispatch => {
     axios
     .post('/api/userinfo/update', data)
@@ -67,6 +87,7 @@ export const deleteChild = (childId) => dispatch => {
     .then(res => {
         localStorage.setItem('userinfo',JSON.stringify(res.data))
         dispatch(setCurrentUserinfo(JSON.parse(localStorage.getItem('userinfo'))));
+        dispatch(getSideMap());
         return dispatch({
             type:   UPDATE_USERINFO,
             payload: res.data

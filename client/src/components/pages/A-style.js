@@ -11,5 +11,4 @@ class Astyle extends Component{
             </div>)
     }
 }
-  
 export default Astyle

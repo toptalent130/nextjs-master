@@ -225,22 +225,7 @@ footer{
   background-color: rgba(0, 0, 0, 0.5);
   overflow-x: hidden;
   padding-top: 100px;
-  /* margin-top:67px; */
-  /* margin-top:100px; */
-}
-
-.sidenav a{
-  padding: 6px 8px 6px 16px;
-  font-size: 15px;
-  color: #ffffff;
-  display: block;
-}
-.sidenav a:hover {
-  color: #f1f1f1;
-}
-.sidenav li{
-  left: 0 !important;
-}
+ }
   /* border: none;
   outline: none;
   background-color: red;
@@ -300,35 +285,56 @@ footer{
   z-index:1;
   margin:200px 43%;
 }
-.sidenav button{
+.sidenav > button{
   background-color: transparent;
   color:white;
   border-width: 0;
-  font-size:22px;
   color:white;
+  font-size:22px;
 }
-.sidenav div ul a{
-  margin-right: 15px;
-  margin-left:-10px;
+#demo2 ul li{
+  font-size: 18px !important;
+  list-style: none;
+  color:rgb(224, 32, 32);
+  left:0 !important;
+  padding:2px 2px;
+  margin-right:10px;
 }
-.sidenav div ul li{
-  list-style-type: square;
+#demo1 ul li{
   font-size: 18px;
-  color:white
+  color:white;
+  margin:2px 10px;
+  padding:5px 5px;
 }
 .sidenav div li button{
   background-color: transparent;
   color:white;
   border-width: 0;
-  font-size:16px;
   color:white;
+  left:0 !important;
 }
 .sidenav button:focus{
   outline: none;
 }
+.sidenav > button{
+  width:100%;
+  background-color: rgb(105, 139, 37);
+}
+.sidenav button:hover{
+  background-color: rgb(105, 139, 37);
+}
+.sidenav li:hover{
+  background-color: rgb(105, 139, 37);
+}
+.sidenav li a:hover{
+  text-decoration: none;
+}
 .A4-book > p{
   font-size:50px;
   color:white;
+}
+.mySidenav{
+  display: none;
 }
 .mySidenav button {
   margin-top: 50px;
@@ -342,10 +348,28 @@ footer{
   color: white;
   border-radius: 5px 0 0 5px ;
   border-width: 0;
-  z-index: 5;
+  z-index: 2;
 }
 
 .mySidenav button:hover {
+  right: 0;
+}
+.mySidenavi button {
+  margin-top: 50px;
+  position: fixed;
+  right: -80px;
+  transition: 0.3s;
+  padding: 15px;
+  width: 150px;
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  border-radius: 5px 0 0 5px ;
+  border-width: 0;
+  z-index: 50;
+}
+
+.mySidenavi button:hover {
   right: 0;
 }
 /* #new {
@@ -450,7 +474,6 @@ hr {
   clear: both;
   display: table;
 }
-
 /* Change styles for cancel button and delete button on extra small screens */
 @media screen and (max-width: 300px) {
   .cancelbtn, .deletebtn {

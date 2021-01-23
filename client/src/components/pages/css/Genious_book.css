@@ -6945,7 +6945,8 @@ RESPONSIVE
   font-size: 18px !important;
   font-family: "Sofia", sans-serif !important;
 }
-.MultiLineInput, .Input::placeholder{
+.MultiLineInput::placeholder, .Input::placeholder{
+  font-size: 10px;
   color:red !important;
   font-family: Georgia, 'Times New Roman', Times, serif;
 }
