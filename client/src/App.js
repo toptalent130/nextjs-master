@@ -3,15 +3,10 @@ import { BrowserRouter as Router, Route, Switch } from 'react-router-dom';
 import jwt_decode from 'jwt-decode';
 import setAuthToken from './utils/setAuthToken';
 import { setCurrentUser, logoutUser } from './actions/authActions';
-import { setCurrentUserinfo } from './actions/userinfoAction';
-import { getSideMap } from './actions/sidemapActions';
-
 import { Provider } from 'react-redux';
 import store from './store';
-
+// user case
 import PrivateRoute from './components/common/PrivateRoute';
-// import AdminRoute from './components/common/AdminRoute';
-//client component
 import Navbar from './components/layout/Navbar';
 import Footer from './components/layout/Footer';
 import Landing from './components/layout/Landing';
@@ -19,25 +14,14 @@ import Register from './components/auth/Register';
 import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import ChildNum from './components/exploretory/childNum';
+import ParentInfo from './components/exploretory/parentInfo';
 import BasicQuestions from './components/exploretory/basicQuestions';
 import NotFound from './components/not-found/NotFound';
-// import CommonQizz from './components/qizz/CommonQizz';
-// import NewQuestion from './components/question/question';
-// import Examination from './components/answer/answer';
-
-//admin component
-import AdminLogin from './components/admin/auth/login';
-// import AdminDashboard from './components/admin/dashboard/dashboard';
-// import TeacherManager from './components/admin/dashboard/teacher';
-// import ProblemManager from './components/admin/dashboard/problem';
-// import ResultManager from './components/admin/dashboard/result';
+//admin case
+import AdminDashboard from './components/admin/dashboard/dashboard';
+import ChildDoc from './components/admin/dashboard/childdoc';
 
 import './App.css';
-// localStorage.removeItem('userinfo')
-if(localStorage.getItem('userinfo')){
-  store.dispatch(setCurrentUserinfo(JSON.parse(localStorage.getItem('userinfo'))));
-}
-// Check for token
 if (localStorage.jwtToken) {
   
   // Set auth token header auth
@@ -69,7 +53,9 @@ class App extends Component {
             <Route exact path="/" component={Landing} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/login" component={Login} />
-            <Route exact path="/admin" component={AdminLogin} />
+            <Switch>
+              <PrivateRoute exact path="/parentInfo" component={ParentInfo} />
+            </Switch>
             <Switch>
               <PrivateRoute exact path="/childnum" component={ChildNum} />
             </Switch>
@@ -79,9 +65,12 @@ class App extends Component {
             <Switch>
               <PrivateRoute exact path="/dashboard" component={Dashboard} />
             </Switch>
-            {/* <Switch>
-              <PrivateRoute exact path="/commonQizz" component={CommonQizz} />
-            </Switch> */}
+            <Switch>
+              <PrivateRoute exact path="/admindashboard" component={AdminDashboard} />
+            </Switch>
+            <Switch>
+              <PrivateRoute exact path="/childinfo" component={ChildDoc} />
+            </Switch>
             {/* <Switch>
               <PrivateRoute exact path="/question" component={NewQuestion} />
             </Switch> */}

@@ -19,18 +19,24 @@ class Login extends Component {
 
   componentDidMount() {
     if (this.props.auth.isAuthenticated) {
-      // console.log('-------------------------------');
-      this.props.history.push('/childnum');
+      if(this.props.auth.user.role >= 2)
+      {
+        this.props.history.push('/admindashboard');
+      } else {
+        this.props.history.push('/parentInfo');
+      }
     }
   }
 
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth.isAuthenticated) {
-      // console.log('-------------------------------');
-
-      this.props.history.push('/childnum');
+      if(nextProps.auth.user.role >= 2)
+      { 
+        this.props.history.push('/admindashboard');
+      } else {
+        this.props.history.push('/parentInfo');
+      }
     }
-
     if (nextProps.errors) {
       this.setState({ errors: nextProps.errors });
     }
@@ -56,8 +62,8 @@ class Login extends Component {
         <div className="container">
           <div className="row mt-9">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center text-light">Log In</h1>
-              <p className="lead text-center text-light">
+              <h1 className="display-4 text-center">Log In</h1>
+              <p className="lead text-center">
                 Sign in to your account
               </p>
               <br/>

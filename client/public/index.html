@@ -14,10 +14,11 @@
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Sofia">
+  <link rel="dns-prefetch" href="//mdbcdn.b-cdn.net">
   <script defer src="https://use.fontawesome.com/releases/v5.0.9/js/all.js"
     integrity="sha384-8iPTk2s/jMVj81dnzb/iFR2sdA7u06vHJyyLlAd4snFpCl/SnyUjRrbdJsw1pGIl" crossorigin="anonymous">
   </script>
-  <script src='https://kit.fontawesome.com/a076d05399.js'></script>
+  <!-- <script src='https://kit.fontawesome.com/a076d05399.js'></script> -->
   <title>Genius Kids</title>
 </head>
 
@@ -25,7 +26,7 @@
   <noscript>
     You need to enable JavaScript to run this app.
   </noscript>
-  <div id="root"></div>
+  <div id="root" style="width:100%"></div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
@@ -42,7 +43,32 @@
           // $('.slide-navbar').css('top','-150px');
         }
       }
+      $(".sidenavClose").click(()=>{
+        $(".sidenav").css("margin-left","-300px");
+        $(".sidenavOpen").css('display','none');
+        $(".maincontent").css("margin-left","0");
+      })
+      $(".sidenavOpen").click(()=>{
+        $(".sidenav").css("margin-left","0px");
+        if($(window).width() <= 1065){
+          $(".sidenavOpen").css('display','block');
+          $(".maincontent").css("margin-left","0px");
+        } else {
+          $(".sidenavOpen").css('display','none');
+          $(".maincontent").css("margin-left","300px");
+        }
+      });
+      if($(window).width() <= 1065){
+        $(".sidenavOpen").css('display','block');
+        $(".adminsidenav").css("margin-left","-300px");
+        $(".maincontent").css("margin-left","0");
+      } else {
+        $(".sidenavOpen").css('display','none');
+        $(".adminsidenav").css("margin-left","0px");
+        $(".maincontent").css("margin-left","300");
+      }
       var modal = document.getElementById('id01');
+      var newadminmodal = document.getElementById('newadmin');
       window.onclick = function(event) {
         if (event.target == modal) {
           modal.style.display = "none";

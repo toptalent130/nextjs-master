@@ -1,6 +1,4 @@
-// import isEmpty from '../validation/is-empty';
-
-import { CREATE_USERINFO, UPDATE_USERINFO, SET_CURRENTUSERINFO } from '../actions/types';
+import { CREATE_USERINFO, UPDATE_USERINFO, GET_USERINFO } from '../actions/types';
 
 const initialState = {
 };
@@ -15,11 +13,11 @@ export default function(state = initialState, action) {
     case UPDATE_USERINFO:
       return {
         ...userinfo
-    };
-    case SET_CURRENTUSERINFO:
+      };
+    case GET_USERINFO:
       return {
         ...userinfo
-    };
+      }
     default:
       return state;
   }

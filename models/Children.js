@@ -14,13 +14,28 @@ const ChildrenSchema = new Schema({
   lastname: {
     type: String
   },
-  age:{
+  sex:{
     type: String
   },
   birthday:{
     type: Date
   },
-  address: {
+  zip: {
+    type: String
+  },
+  street: {
+    type: String
+  },
+  state: {
+    type: String
+  },
+  city: {
+    type: String
+  },
+  house_number: {
+    type: String
+  },
+  completion: {
     type: String
   },
   date: {

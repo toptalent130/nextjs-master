@@ -2,74 +2,69 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
-import Signature  from './signature'
-import { updateUserInfo, updateChildInfo } from '../../actions/userinfoAction';
-import'./css/Genious_book.css'
+import Signature  from '../../pages/signature'
+import { updateUserInfo, updateChildInfo } from '../../../actions/userinfoAction';
+import'../../pages/css/Genious_book.css'
 import $ from 'jquery';
-import CheckFunctions from './checkfun'
 
-class ALic9221 extends Component {
+
+class ChildDoc extends Component {
 	constructor() {
 		super();
 		this.state = {
             userid: '',
-			data: {
-				text58:"Sacramento Regional Office",
-				text59:"2525 Natomas Park Dr., Ste 250, MS 19-29",
-				text60:"Sacramento",
-				text61:"95833",
-				text62:"(916) 263-5744",
-				text64:"2800 La Loma Drive, Rancho Cordova, CA 95670"
-			},
-			basicinfo:{},
+			data: {},
+            basicinfo:{},
+            func: {}
 		};
 	this.onChange = this.onChange.bind(this);
 	this.onSubmit = this.onSubmit.bind(this);
 	}
 	componentDidMount() {
-		this.setState({basicinfo: this.props.child,userid: this.props.userinfo._id});
-		this.props.userinfo.children.forEach(element => {
-			if(element._id === this.props.child._id){
-				if(element.data){
-					this.setState({basicinfo: this.props.child,userid: this.props.userinfo._id, data:{...element.data}});
-				}
-			}
-		});
+        const tem = JSON.parse(localStorage.getItem('child'));
+        this.setState({userid: tem.userid, data:tem.childinfo.data, basicinfo:tem, func: tem.func});
+	}
+	getParameterByName =(name, url = window.location.href) => {
+		name = name.replace(/[\[\]]/g, '\\$&');
+		var regex = new RegExp('[?&]' + name + '(=([^&#]*)|&|#|$)'),
+			results = regex.exec(url);
+		if (!results) return null;
+		if (!results[2]) return '';
+		return decodeURIComponent(results[2].replace(/\+/g, ' '));
 	}
 	componentWillMount() {
-		$(document).ready(()=>{
-			$("#whereEmpty").click(async()=>{
-				const inputtags = $(".main-page input[type='text']");
-				for(let i=0; i<inputtags.length; i++){
-					if((!inputtags.eq(i).val())&&(inputtags.eq(i).attr('placeholder')!=="OPTIONAL")){
-						const temY = inputtags.eq(i).offset().top;
-						// const temX = inputtags.eq(i).offset().left;
-						await $('html, body').animate({scrollTop: temY-500},'slow');
-						break;
-					}
-				}
-			});
-		});
+        $(document).ready(()=>{
+            $("#whereEmpty").click(async()=>{
+                const inputtags = $("#openchild input[type='text']");
+                for(let i=0; i<inputtags.length; i++){
+                    if(!inputtags.eq(i).val()){
+                        const temY = inputtags.eq(i).offset().top;
+                        // const temX = inputtags.eq(i).offset().left;
+                        await $('#openchild').animate({scrollTop: temY-500},'slow');
+                        break;
+                    }
+                }
+            });
+        });
 	}
 	componentWillReceiveProps(nextProps){
-		this.setState({basicinfo: nextProps.child,userid: this.props.userinfo._id, data:{...this.state.data}});
-		this.props.userinfo.children.forEach(async(element) => {
-			if(element._id === nextProps.child._id){
-				// this.setState({basicinfo: nextProps.child,userid: this.props.userinfo._id, data:{...element.data}});
-				if(localStorage.getItem('signature2')){
-					await this.setState({basicinfo: nextProps.child,userid: this.props.userinfo._id, data:{...element.data, signature2: localStorage.getItem('signature2')}});
-				}
-				if(localStorage.getItem('signature1')){
-					await this.setState({basicinfo: nextProps.child,userid: this.props.userinfo._id, data:{...element.data, signature1: localStorage.getItem('signature1')}});
-				}
-				if(localStorage.getItem('signature')){
-					await this.setState({basicinfo: nextProps.child,userid: this.props.userinfo._id, data:{...element.data, signature: localStorage.getItem('signature')}});
-				}
-				localStorage.removeItem('signature');
-				localStorage.removeItem('signature1');
-				localStorage.removeItem('signature2');
-			}
-		});
+		// this.setState({basicinfo: nextProps.child,userid: this.props.userinfo._id, data:{...this.state.data}});
+		// this.props.userinfo.children.forEach(async(element) => {
+		// 	if(element._id === nextProps.child._id){
+		// 		if(localStorage.getItem('signature2')){
+		// 			await this.setState({basicinfo: nextProps.child,userid: this.props.userinfo._id, data:{...element.data, signature2: localStorage.getItem('signature2')}});
+		// 		}
+		// 		if(localStorage.getItem('signature1')){
+		// 			await this.setState({basicinfo: nextProps.child,userid: this.props.userinfo._id, data:{...element.data, signature1: localStorage.getItem('signature1')}});
+		// 		}
+		// 		if(localStorage.getItem('signature')){
+		// 			await this.setState({basicinfo: nextProps.child,userid: this.props.userinfo._id, data:{...element.data, signature: localStorage.getItem('signature')}});
+		// 		}
+		// 		localStorage.removeItem('signature');
+		// 		localStorage.removeItem('signature1');
+		// 		localStorage.removeItem('signature2');
+		// 	}
+		// });
 	}
 	onSubmit(e) {
 		e.preventDefault();
@@ -94,13 +89,12 @@ class ALic9221 extends Component {
 			}
 		}
 		const data = {...this.state, completion: parseInt((filledfield/totalfields)*100)+'%'}
-		this.props.updateChildInfo(data);
+		// this.props.updateChildInfo(data);
 	}
 	onChange(e) {
 		if(e.target.name.indexOf('check')){
 			this.setState({data:{...this.state.data,[e.target.name]:e.target.value}});
 		} else {
-			CheckFunctions(e);
 			this.setState({data:{...this.state.data,[e.target.name]:e.target.checked}});
 		}
 	}
@@ -110,7 +104,6 @@ class ALic9221 extends Component {
 		const imageURL2 = this.state.data.signature2||'';
 		const basicinfo = this.state.basicinfo;
 		const userinfo = this.props.userinfo;
-		// let parentname = this.props.userinfo.guadian_firstname+' '+this.props.userinfo.guadian_lastname; 
 		const childfirstname = basicinfo.firstname||'';
 		const childmiddlename = basicinfo.middlename||'';
 		const childlastname = basicinfo.lastname||'';
@@ -136,7 +129,10 @@ class ALic9221 extends Component {
 		const ghouse_number = userinfo.house_number||'';
 		const gbusiness_phone_number = userinfo.business_phone_number||'';
 		const ghome_phone_number = userinfo.home_phone_number||'';
-		const ghomeaddress = ghouse_number+' '+gstreet+' '+gcity+' '+gstate;
+        const ghomeaddress = ghouse_number+' '+gstreet+' '+gcity+' '+gstate;
+		let wherebutton='';
+        if(this.props.tem === 'edit')
+            wherebutton = <a href="/admindashboard"><div className="whereEmpty"><button type="submit" className="btn" id="whereEmpty">Where</button></div></a>;
 		return (
 				<form onSubmit={this.onSubmit} className="main-page bubble-element Page" style={{width: "794px", height: "27450px", minHeight: "100%", marginRight: "auto", marginLeft: "auto", position: "relative", top: "0px", overflow: "hidden", background: "none rgb(153, 153, 153)", boxSizing: "border-box"}}>
 					<div className="bubble-r-line" style={{marginTop: "0px", height: "1123px"}}>
@@ -196,7 +192,7 @@ class ALic9221 extends Component {
 										<input type="text" name="text312" value={childbirthday} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="12" style={{position: "absolute", boxSizing: "border-box", zIndex: "6", height: "31px", width: "170px", left: "0px", top: "12px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "26px", left: "411px", width: "84px"}}>
-										<input type="text" name="text313" value={childage||0} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="14" style={{position: "absolute", boxSizing: "border-box", zIndex: "7", height: "26px", width: "84px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text313" value={childage||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="14" style={{position: "absolute", boxSizing: "border-box", zIndex: "7", height: "26px", width: "84px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "35px", left: "619px", width: "22px"}}>
 										<div className="bubble-element Checkbox clickable-element" style={{position: "absolute", boxSizing: "border-box", zIndex: "20", height: "22px", width: "22px", left: "0px", top: "16px", overflow: "visible", fontFamily: "Lato", fontSize: "14px", color: "rgb(37, 37, 37); line-height: 1"}}>
@@ -234,10 +230,10 @@ class ALic9221 extends Component {
 										<input type="text" name="text318" value={ghome_phone_number} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="20" style={{position: "absolute", boxSizing: "border-box", zIndex: "14", height: "28px", width: "154px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "28px", left: "323px", width: "154px"}}>
-										<input type="text" name="text319" value={gbusiness_phone_number} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="21" style={{position: "absolute", boxSizing: "border-box", zIndex: "15", height: "28px", width: "154px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text319" value={this.state.data.text319||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="21" style={{position: "absolute", boxSizing: "border-box", zIndex: "15", height: "28px", width: "154px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "28px", left: "531px", width: "154px"}}>
-										<input type="text" name="text320" value={gbusiness_phone_number} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="22" style={{position: "absolute", boxSizing: "border-box", zIndex: "16", height: "28px", width: "154px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text320" value={this.state.data.text320||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="22" style={{position: "absolute", boxSizing: "border-box", zIndex: "16", height: "28px", width: "154px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "109px", height: "24px"}}>
@@ -325,34 +321,34 @@ class ALic9221 extends Component {
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "1px", height: "24px"}}>
 									<div className="bubble-r-box" style={{height: "24px", left: "75px", width: "248px"}}>
-										<input type="text" name="text322" value={this.state.data.text322||''} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL"  maxLength="" tabIndex="6" style={{position: "absolute", boxSizing: "border-box", zIndex: "29", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text322" value={this.state.data.text322||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="6" style={{position: "absolute", boxSizing: "border-box", zIndex: "29", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "24px", left: "403px", width: "252px"}}>
-										<input type="text" name="text323" value={this.state.data.text323||''} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL"  maxLength="" tabIndex="7" style={{position: "absolute", boxSizing: "border-box", zIndex: "30", height: "24px", width: "252px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text323" value={this.state.data.text323||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="7" style={{position: "absolute", boxSizing: "border-box", zIndex: "30", height: "24px", width: "252px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "20px", height: "24px"}}>
 									<div className="bubble-r-box" style={{height: "24px", left: "74px", width: "248px"}}>
-										<input type="text" name="text324" value={this.state.data.text324||''} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL"  maxLength="" tabIndex="8" style={{position: "absolute", boxSizing: "border-box", zIndex: "31", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text324" value={this.state.data.text324||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="8" style={{position: "absolute", boxSizing: "border-box", zIndex: "31", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "24px", left: "403px", width: "248px"}}>
-										<input type="text" name="text325" value={this.state.data.text325||''} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL"  maxLength="" tabIndex="9" style={{position: "absolute", boxSizing: "border-box", zIndex: "36", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text325" value={this.state.data.text325||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="9" style={{position: "absolute", boxSizing: "border-box", zIndex: "36", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "19px", height: "24px"}}>
 									<div className="bubble-r-box" style={{height: "24px", left: "74px", width: "248px"}}>
-										<input type="text" name="text326" value={this.state.data.text326||''} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL"  maxLength="" tabIndex="10" style={{position: "absolute", boxSizing: "border-box", zIndex: "32", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text326" value={this.state.data.text326||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="10" style={{position: "absolute", boxSizing: "border-box", zIndex: "32", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "24px", left: "403px", width: "248px"}}>
-										<input type="text" name="text327" value={this.state.data.text327||''} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL"  maxLength="" tabIndex="11" style={{position: "absolute", boxSizing: "border-box", zIndex: "35", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text327" value={this.state.data.text327||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="11" style={{position: "absolute", boxSizing: "border-box", zIndex: "35", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "21px", height: "24px"}}>
 									<div className="bubble-r-box" style={{height: "24px", left: "75px", width: "248px"}}>
-										<input type="text" name="text328" value={this.state.data.text328||''} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL"  maxLength="" tabIndex="12" style={{position: "absolute", boxSizing: "border-box", zIndex: "33", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text328" value={this.state.data.text328||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="12" style={{position: "absolute", boxSizing: "border-box", zIndex: "33", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "24px", left: "403px", width: "248px"}}>
-										<input type="text" name="text329" value={this.state.data.text329||''} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL"  maxLength="" tabIndex="13" style={{position: "absolute", boxSizing: "border-box", zIndex: "34", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text329" value={this.state.data.text329||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="13" style={{position: "absolute", boxSizing: "border-box", zIndex: "34", height: "24px", width: "248px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "35px", height: "18px"}}>
@@ -532,10 +528,10 @@ class ALic9221 extends Component {
 										<Signature imageUrl={imageURL2} type={"director"}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "31px", left: "391px", width: "182px"}}>
-										<input type="text" name="text336" value={this.state.data.text336||''} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL"  maxLength="" tabIndex="5" style={{position: "absolute", boxSizing: "border-box", zIndex: "24", height: "31px", width: "182px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text336" value={this.state.data.text336||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="5" style={{position: "absolute", boxSizing: "border-box", zIndex: "24", height: "31px", width: "182px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "32px", left: "600px", width: "102px"}}>
-										<input type="text" name="text337" value={this.state.data.text337} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL"  maxLength="" tabIndex="6" style={{position: "absolute", boxSizing: "border-box", zIndex: "25", height: "31px", width: "102px", left: "0px", top: "1px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text337" value={today} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED"  maxLength="" tabIndex="6" style={{position: "absolute", boxSizing: "border-box", zIndex: "25", height: "31px", width: "102px", left: "0px", top: "1px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 							</div>
@@ -607,7 +603,7 @@ class ALic9221 extends Component {
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "33px", height: "44px"}}>
 									<div className="bubble-r-box" style={{height: "44px", left: "63px", width: "648px"}}>
-										<textarea onChange={this.onChange} name="text247" value={this.state.data.text247||''} className="check35pair bubble-element MultiLineInput" data-gramm_editor="false" placeholder="REQUIRED" maxLength="" tabIndex="254" style={{position: "absolute", boxSizing: "border-box", height: "44px", width: "648px", left: "0px", top: "0px", border: "1px solid rgb(189, 189, 189)", backgroundColor: "rgb(255, 255, 255)", borderRadius: "3px", fontFamily: "Lato", fontSize: "14px", color: "rgb(61, 61, 61)", lineHeight: "1", padding: "4px"}}></textarea>
+										<textarea onChange={this.onChange} name="text247" value={this.state.data.text247||''} className="bubble-element MultiLineInput" data-gramm_editor="false" placeholder="REQUIRED" maxLength="" tabIndex="254" style={{position: "absolute", boxSizing: "border-box", height: "44px", width: "648px", left: "0px", top: "0px", border: "1px solid rgb(189, 189, 189)", backgroundColor: "rgb(255, 255, 255)", borderRadius: "3px", fontFamily: "Lato", fontSize: "14px", color: "rgb(61, 61, 61)", lineHeight: "1", padding: "4px"}}></textarea>
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "36px", height: "20px"}}>
@@ -616,20 +612,8 @@ class ALic9221 extends Component {
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "40px", height: "20px"}}>
-									<div className="bubble-r-box" style={{height: "16px", left: "424px", width: "19px"}}>
-										<div className="bubble-element Checkbox clickable-element" style={{position: "absolute", boxSizing: "border-box", height: "15px", width: "19px", left: "-290px", top: "-6px", overflow: "visible", fontFamily: "Lato", fontSize: "14px", color: "rgb(37, 37, 37)", lineHeight: "1"}}>
-											<input type="checkbox" onChange={this.onChange} name="check564" checked={this.state.data.check564||false} id="1610302661744x9431" style={{backgroundColor: "white"}} tabIndex="572"/>
-											<label htmlFor="1610302661744x9431">Yes</label>
-										</div>
-									</div>
-									<div className="bubble-r-box" style={{height: "15px", left: "485px", width: "19px"}}>
-										<div className="bubble-element Checkbox clickable-element" style={{position: "absolute", boxSizing: "border-box", height: "15px", width: "19px", left: "-270px", top: "-6px", overflow: "visible", fontFamily: "Lato", fontSize: "14px", color: "rgb(37, 37, 37)", lineHeight: "1"}}>
-											<input type="checkbox" onChange={this.onChange} name="check565" checked={this.state.data.check565||false} id="1610302661746x9491" style={{backgroundColor: "white"}} tabIndex="573"/>
-											<label htmlFor="1610302661746x9491">No</label>
-										</div>
-									</div>
 									<div className="bubble-r-box" style={{height: "20px", left: "82px", width: "601px"}}>
-										<input type="text" name="text193" value={this.state.data.text193||''} onChange={this.onChange}  className="check565pair bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="256" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "270px", left: "412px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text193" value={this.state.data.text193||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="256" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "601px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "14px", height: "21px"}}>
@@ -648,12 +632,12 @@ class ALic9221 extends Component {
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "0px", height: "20px"}}>
 									<div className="bubble-r-box" style={{height: "20px", left: "83px", width: "601px"}}>
-										<input type="text" name="text194" value={this.state.data.text194||''} onChange={this.onChange}  className="check37pair bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="257" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "601px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text194" value={this.state.data.text194||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="257" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "601px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "9px", height: "20px"}}>
 									<div className="bubble-r-box" style={{height: "20px", left: "388px", width: "313px"}}>
-										<input type="text" name="text195" value={this.state.data.text195||''} onChange={this.onChange}  className="check37pair bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="260" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "313px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text195" value={this.state.data.text195||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="260" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "313px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 							</div>
@@ -933,13 +917,13 @@ class ALic9221 extends Component {
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "54px", height: "21px"}}>
 									<div className="bubble-r-box" style={{height: "20px", left: "25px", width: "160px"}}>
-										<input type="text" name="text133" value={guadianname} onChange={this.onChange}   className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="184" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text133" value={this.state.data.text133||''} onChange={this.onChange}   className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="184" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "20px", left: "216px", width: "160px"}}>
-										<input type="text" name="text134" value={ghomeaddress} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="185" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text134" value={this.state.data.text134||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="185" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "20px", left: "413px", width: "160px"}}>
-										<input type="text" name="text135" value={gbusiness_phone_number} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="186" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text135" value={this.state.data.text135||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="186" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "21px", left: "599px", width: "160px"}}>
 										<input type="text" name="text136" value={this.state.data.text136||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="187" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "1px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
@@ -947,16 +931,16 @@ class ALic9221 extends Component {
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "3px", height: "21px"}}>
 									<div className="bubble-r-box" style={{height: "21px", left: "26px", width: "160px"}}>
-										<input type="text" name="text137" value={this.state.data.text137||''} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL" maxLength="" tabIndex="188" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "1px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text137" value={this.state.data.text137||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="188" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "1px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "21px", left: "216px", width: "160px"}}>
-										<input type="text" name="text138" value={this.state.data.text138||''} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL" maxLength="" tabIndex="189" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "1px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text138" value={this.state.data.text138||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="189" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "1px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "20px", left: "413px", width: "160px"}}>
-										<input type="text" name="text139" value={this.state.data.text139||''} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL" maxLength="" tabIndex="190" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text139" value={this.state.data.text139||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="190" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "20px", left: "600px", width: "160px"}}>
-										<input type="text" name="text140" value={this.state.data.text140||''} onChange={this.onChange}  className="bubble-element Input" placeholder="OPTIONAL" maxLength="" tabIndex="191" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text140" value={this.state.data.text140||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQUIRED" maxLength="" tabIndex="191" style={{position: "absolute", boxSizing: "border-box", height: "20px", width: "160px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "2px", height: "21px"}}>
@@ -1153,7 +1137,7 @@ class ALic9221 extends Component {
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "48px", height: "41px"}}>
 									<div className="bubble-r-box" style={{height: "16px", left: "424px", width: "19px"}}>
-										<div className="bubble-element Checkbox clickable-element" style={{position: "absolute", boxSizing: "border-box", height: "15px", width: "19px", left: "-290px", top: "10px", overflow: "visible", fontFamily: "Lato", fontSize: "14px", color: "rgb(37, 37, 37)", lineHeight: "1"}}>
+										<div className="bubble-element Checkbox clickable-element" style={{position: "absolute", boxSizing: "border-box", height: "15px", width: "19px", left: "-400px", top: "10px", overflow: "visible", fontFamily: "Lato", fontSize: "14px", color: "rgb(37, 37, 37)", lineHeight: "1"}}>
 											<input type="checkbox" onChange={this.onChange} name="check64" checked={this.state.data.check64||false} id="1610302661744x9431" style={{backgroundColor: "white"}} tabIndex="372"/>
 											<label htmlFor="1610302661744x9431">Yes</label>
 										</div>
@@ -1165,7 +1149,7 @@ class ALic9221 extends Component {
 										</div>
 									</div>
 									<div className="bubble-r-box" style={{height: "41px", left: "535px", width: "236px"}}>
-										<input type="text" name="text77" value={this.state.data.text77||''} onChange={this.onChange}  className="check65pair bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="79" style={{position: "absolute", boxSizing: "border-box", height: "28px", width: "236px", left: "0px", top: "13px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text77" value={this.state.data.text77||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="79" style={{position: "absolute", boxSizing: "border-box", height: "28px", width: "236px", left: "0px", top: "13px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "31px", height: "51px"}}>
@@ -1282,10 +1266,10 @@ class ALic9221 extends Component {
 										</div>
 									</div>
 									<div className="bubble-r-box" style={{height: "57px", left: "281px", width: "196px"}}>
-										<input type="text" name="text88" value={this.state.data.text88||''} onChange={this.onChange}  className="check13pair bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="103" style={{position: "absolute", boxSizing: "border-box", height: "48px", width: "196px", left: "0px", top: "9px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text88" value={this.state.data.text88||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="103" style={{position: "absolute", boxSizing: "border-box", height: "48px", width: "196px", left: "0px", top: "9px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "64px", left: "513px", width: "266px"}}>
-										<input type="text" name="text89" value={this.state.data.text89||''} onChange={this.onChange}  className="check13pair bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="104" style={{position: "absolute", boxSizing: "border-box", height: "38px", width: "266px", left: "0px", top: "26px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text89" value={this.state.data.text89||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="104" style={{position: "absolute", boxSizing: "border-box", height: "38px", width: "266px", left: "0px", top: "26px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 							</div>
@@ -1370,7 +1354,7 @@ class ALic9221 extends Component {
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "2px", height: "25px"}}>
 									<div className="bubble-r-box" style={{height: "25px", left: "263px", width: "134px"}}>
-										<input type="text" name="text104" value={this.state.data.text104||''} onChange={this.onChange}  className="check15pair bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="121" style={{position: "absolute", boxSizing: "border-box", height: "25px", width: "134px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text104" value={this.state.data.text104||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="121" style={{position: "absolute", boxSizing: "border-box", height: "25px", width: "134px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "16px", left: "424px", width: "19px"}}>
 										<div className="bubble-element Checkbox clickable-element" style={{position: "absolute", boxSizing: "border-box", height: "15px", width: "19px", left: "0px", top: "3px", overflow: "visible", fontFamily: "Lato", fontSize: "14px", color: "rgb(37, 37, 37)", lineHeight: "1"}}>
@@ -1385,7 +1369,7 @@ class ALic9221 extends Component {
 										</div>
 									</div>
 									<div className="bubble-r-box" style={{height: "25px", left: "651px", width: "105px"}}>
-										<input type="text" name="text105" value={this.state.data.text105||''} onChange={this.onChange}  className="check17pair bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="124" style={{position: "absolute", boxSizing: "border-box", height: "22px", width: "105px", left: "0px", top: "3px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text105" value={this.state.data.text105||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="124" style={{position: "absolute", boxSizing: "border-box", height: "22px", width: "105px", left: "0px", top: "3px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "22px", height: "32px"}}>
@@ -1415,7 +1399,7 @@ class ALic9221 extends Component {
 										</div>
 									</div>
 									<div className="bubble-r-box" style={{height: "45px", left: "265px", width: "125px"}}>
-										<input type="text" name="text109" value={this.state.data.text109||''} onChange={this.onChange}  className="check19pair bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="130" style={{position: "absolute", boxSizing: "border-box", height: "40px", width: "125px", left: "0px", top: "5px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text109" value={this.state.data.text109||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="130" style={{position: "absolute", boxSizing: "border-box", height: "40px", width: "125px", left: "0px", top: "5px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "34px", left: "410px", width: "19px"}}>
 										<div className="bubble-element Checkbox clickable-element" style={{position: "absolute", boxSizing: "border-box", height: "15px", width: "19px", left: "2px", top: "21px", overflow: "visible", fontFamily: "Lato", fontSize: "14px", color: "rgb(37, 37, 37)", lineHeight: "1"}}>
@@ -1430,7 +1414,7 @@ class ALic9221 extends Component {
 										</div>
 									</div>
 									<div className="bubble-r-box" style={{height: "54px", left: "613px", width: "132px"}}>
-										<input type="text" name="text110" value={this.state.data.text110||''} onChange={this.onChange}  className="check21pair bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="133" style={{position: "absolute", boxSizing: "border-box", height: "35px", width: "132px", left: "0px", top: "19px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text110" value={this.state.data.text110||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="133" style={{position: "absolute", boxSizing: "border-box", height: "35px", width: "132px", left: "0px", top: "19px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "30px", height: "55px"}}>
@@ -1447,7 +1431,7 @@ class ALic9221 extends Component {
 										</div>
 									</div>
 									<div className="bubble-r-box" style={{height: "40px", left: "264px", width: "126px"}}>
-										<input type="text" name="text111" value={this.state.data.text111||''} onChange={this.onChange}  className="check23pair bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="136" style={{position: "absolute", boxSizing: "border-box", height: "40px", width: "126px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text111" value={this.state.data.text111||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="136" style={{position: "absolute", boxSizing: "border-box", height: "40px", width: "126px", left: "0px", top: "0px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 									<div className="bubble-r-box" style={{height: "47px", left: "412px", width: "19px"}}>
 										<div className="bubble-element Checkbox clickable-element" style={{position: "absolute", boxSizing: "border-box", height: "15px", width: "19px", left: "0px", top: "35px", overflow: "visible", fontFamily: "Lato", fontSize: "14px", color: "rgb(37, 37, 37)", lineHeight: "1"}}>
@@ -1462,7 +1446,7 @@ class ALic9221 extends Component {
 										</div>
 									</div>
 									<div className="bubble-r-box" style={{height: "55px", left: "617px", width: "128px"}}>
-										<input type="text" name="text112" value={this.state.data.text112||''} onChange={this.onChange}  className="check25pair bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="139" style={{position: "absolute", boxSizing: "border-box", height: "40px", width: "128px", left: "0px", top: "15px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
+										<input type="text" name="text112" value={this.state.data.text112||''} onChange={this.onChange}  className="bubble-element Input" placeholder="REQURIED" maxLength="" tabIndex="139" style={{position: "absolute", boxSizing: "border-box", height: "40px", width: "128px", left: "0px", top: "15px", border: "1px solid rgba(171, 171, 171, 0.41)", backgroundColor: "rgb(252, 252, 252)", borderRadius: "5px", fontFamily: "Barlow", fontSize: "16px", fontWeight: "500", color: "rgb(107, 107, 107)", padding: "0px 10px"}}/>
 									</div>
 								</div>
 								<div className="bubble-r-line" style={{marginTop: "32px", height: "60px"}}>
@@ -2266,20 +2250,11 @@ class ALic9221 extends Component {
 							<div className="bubble-element Group" style={{width: "794px", left: "0px", position: "absolute", boxSizing: "border-box", height: "1123px", top: "0px", backgroundColor: "rgba(255, 255, 255, 0)", backgroundRepeat: "no-repeat", backgroundPosition:  "center center", backgroundSize: "cover", borderRadius: "0px", backgroundImage: "url('https://d1muf25xaso8hp.cloudfront.net/https%3A%2F%2Fs3.amazonaws.com%2Fappforest_uf%2Ff1611560864011x782262815809269800%2FMeal%2520Benefit%2520Form%2520-%2520Parent%2520%25281%2529-5.jpg?w=1024&amp;h=&amp;auto=compress&amp;dpr=1&amp;fit=max')"}}></div>
 						</div>
 					</div>
-					
-					{/* <div className="mySidenavi">
-						<button type="submit" id="save">SAVE</button>
-					</div> */}
-					<div className="whereEmpty">
-						<button type="submit" className="btn" id="whereEmpty">Where</button>
-					</div>
-					{/* <div className="mySidenavii">
-						<button type="submit" id="save">save</button>
-					</div> */}
+					{wherebutton}
 				</form>
 				)};
 			};
-		ALic9221.propTypes = {
+		ChildDoc.propTypes = {
 			updateUserInfo: PropTypes.func.isRequired,
 			updateChildInfo: PropTypes.func.isRequired,
 			auth: PropTypes.object.isRequired,
@@ -2289,5 +2264,10 @@ class ALic9221 extends Component {
 			auth: state.auth,
 			userinfo: state.userinfo
 		});
-
-		export default connect(mapStateToProps, { updateUserInfo, updateChildInfo })(ALic9221);
+		export default connect(mapStateToProps, { updateUserInfo, updateChildInfo })(ChildDoc);
+    
+    
+    
+    
+    
+    

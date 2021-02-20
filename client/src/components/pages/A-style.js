@@ -5,7 +5,7 @@ class Astyle extends Component{
         const { id } = this.props;
         const { data } = this.props;
         return (<div id={id} className="A4-book">
-                <p>Genius Child less than 2 Years</p>
+                <p className="text-center">Genius Child less than 2 Years</p>
                 <br/>
                 <ALic9221 child={data}/>
             </div>)

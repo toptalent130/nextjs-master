@@ -39,12 +39,20 @@ router.post('/register', (req, res) => {
         r: 'pg', // Rating
         d: 'mm' // Default
       });
+      let role;
+      if(req.body.role === "admin"){
+        role = 2;
+      } else if(req.body.role === "superadmin"){
+        role = 3;
+      } else {
+        role = 1;
+      }
       const newUser = new User({
         name: req.body.name,
         email: req.body.email,
         avatar,
         password: req.body.password,
-        role: req.body.role
+        role: role
       });
       bcrypt.genSalt(10, (err, salt) => {
         bcrypt.hash(newUser.password, salt, (err, hash) => {
@@ -77,12 +85,10 @@ router.post('/login', (req, res) => {
             errors.email = 'User not found';
             return res.status(404).json(errors);
           }
-          // Check Password
           bcrypt.compare(password, user.password).then(isMatch => {
             if (isMatch) {
               // User Matched
               const payload = { id: user.id, name: user.name, avatar: user.avatar, role: user.role }; // Create JWT Payload
-
               // Sign Token
               jwt.sign(
                 payload,

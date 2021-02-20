@@ -1,21 +1,19 @@
 img {
   width: 100%;
 }
-
 .landing {
-  position: relative;
+  /* position: relative; */
   background: url('https://www.english.com/blog/wp-content/uploads/2020/08/Annie-webinar-1132x670.jpg') no-repeat;
   background-size: cover;
   background-position: center;
-  height: 937px;
-  /* margin-top: -90px; */
-  /* margin-bottom: -55px; */
+  background-attachment: fixed;
+  height: 1300px;
+  width: 100%;
+  position:fixed;
 }
-
-.landing-inner {
-  /* padding-top: 80px; */
+h1{
+  margin-top:20%;
 }
-
 .dark-overlay {
   background-color: rgba(0, 0, 0, 0.7);
   position: absolute;
@@ -31,11 +29,14 @@ img {
   opacity: 0.9;
 }
 .login{
-  background-color:rgba(3, 3, 3, 0.7);
+  /* background-color:rgba(151, 148, 148, 0.7); */
   /* background: url('https://www.english.com/blog/wp-content/uploads/2020/08/Annie-webinar-1132x670.jpg') no-repeat; */
 }
+.m-auto{
+  /* margin: 10px 10px !important; */
+}
 .register{
-  background-color:rgba(3, 3, 3, 0.7);
+  /* background-color:rgba(3, 3, 3, 0.7); */
 }
 .latest-profiles-img {
   width: 40px;
@@ -43,6 +44,12 @@ img {
 }
 .form-control::placeholder {
   color: #bbb !important;
+}
+.openChild{
+  width:100%;
+  height:100%;
+  padding-top:50px;
+  background-color: rgba(37, 37, 37, 0.7);
 }
 .bg-dark{
   background-color:rgba(37, 37, 37, 0.7) !important;
@@ -87,16 +94,20 @@ footer{
 }
 .nav-link{
   color:white !important;
+  padding-left:50px;
 }
 .navbar-brand img{
   width: 100px!important;
   height: 50px!important;
 }
+.nav-item{
+  padding-right:50px;
+}
 .navbar-brand span{
   color:pink
 }
 .mt-9{
-  margin-top:20%;
+  margin-top:10%;
 }
 .checkgroup span{
   color:grey;
@@ -131,14 +142,15 @@ footer{
   font-size: 24px;
 }
 .dashboard{
-  background-color: yellowgreen;
+  background-color: rgb(109, 108, 108);
   background-size: cover;
-  /* background-position: center; */
-  height:45000px;
-  margin-top: -90px;
-  margin-bottom: -55px;
-  padding-top:100px;
-  /* margin:auto; */
+  height:100%;
+  /* background: url('https://miro.medium.com/max/800/1*Ow5_DPfdiCvJi_wMD3ilOw.jpeg') no-repeat;
+  background-size: cover;
+  background-position: center; */
+  padding-top: 90px;
+  background-attachment: fixed;
+  /* backdrop-filter: blur('100px'); */
 }
 .wdark-overlay{
   background-color: rgba(0, 0, 0, 0.9);
@@ -194,10 +206,14 @@ footer{
 }
 .A4-book{
   position:relative;
-  z-index:0;
-  margin-left:250px;
-  margin-top:200px;
+  /* z-index:0; */
+  /* margin-left:250px; */
+  /* margin-top:200px; */
+  margin:auto;
   width:210mm;
+}
+.bubble-r-line{
+  left:2px;
 }
 .A4{
   width:210mm;
@@ -211,21 +227,48 @@ footer{
   position: fixed;
   bottom: 80px;
   right: 30px;
-  z-index: 0;
+  z-index: 5;
   font-size: 18px;
   /* transition: 0.3s; */
  }
+/* ///////////////////////////////////////////// */
  .sidenav {
   height: 100%;
-  width: 250px;
+  width: 300px;
   position: fixed;
-  z-index: 2;
+  z-index: 5;
   top: 0;
   left: 0;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.7);
   overflow-x: hidden;
-  padding-top: 100px;
  }
+
+.maincontent {
+  margin-left: 300px;
+  transition: 0.5s;
+}
+
+@media screen and (max-width: 1065px) {
+  .sidenav {
+    margin-left:-300px;
+  }
+  .maincontent {margin-left: 0px;}
+}
+@media screen and (max-width: 800px) {
+  .dashboard{
+    width:800px;
+  }
+  .admin{
+    width:800px;
+  }
+}
+
+@media screen and (max-width: 400px) {
+  .sidebar a {
+    text-align: center;
+    float: none;
+  }
+}
   /* border: none;
   outline: none;
   background-color: red;
@@ -281,63 +324,135 @@ footer{
   color:black;
 }
 .preContent{
-  position: fixed;
-  z-index:1;
-  margin:200px 43%;
+  position: relative;
+  height:750px;
+  margin: auto;
+  padding-top: 200px;
+  background-repeat: no-repeat;
+  width: 100%;
 }
-.sidenav > button{
-  background-color: transparent;
-  color:white;
-  border-width: 0;
-  color:white;
-  font-size:22px;
-}
-#demo2 ul li{
-  font-size: 18px !important;
-  list-style: none;
-  color:rgb(224, 32, 32);
-  left:0 !important;
-  padding:2px 2px;
-  margin-right:10px;
-}
-#demo1 ul li{
-  font-size: 18px;
-  color:white;
-  margin:2px 10px;
-  padding:5px 5px;
-}
-.sidenav div li button{
-  background-color: transparent;
-  color:white;
-  border-width: 0;
-  color:white;
-  left:0 !important;
-}
-.sidenav button:focus{
-  outline: none;
-}
-.sidenav > button{
-  width:100%;
-  background-color: rgb(105, 139, 37);
-}
-.sidenav button:hover{
-  background-color: rgb(105, 139, 37);
+.sidenav{
+  transition: 0.5s;
 }
 .sidenav li:hover{
-  background-color: rgb(105, 139, 37);
+  color: white;
+}
+.sidenav li a{
+  font-size: 20px;
+  color:rgb(190, 186, 186);
+}
+.sidenav{
+  list-style-type:  disc !important;
+}
+.sidenav > .chlist, .sidenav > .sitemap{
+  color:rgb(190, 186, 186);
+  border-width: 0;
+  font-size:22px;
+  outline:none;
+  background-color: rgb(12, 12, 12);
+  width:100%;
+  margin:1px 0px;
+  padding: 3px 10px !important;
+}
+.sidenav > .chlist:hover, .sidenav > .sitemap:hover{
+  color:rgb(255, 255, 255);
+}
+.sidenav li > button{
+  font-size: 20px;
+  background-color:transparent;
+  outline:none;
+  border-width: 0px;
+  color:rgb(190, 186, 186);
+  padding-left: 0px;
+}
+.sidenav li > button:hover{
+  color:white;
+  outline:none;
+  border-width: 0px;
+}
+.sidenav li{
+  color:rgb(190, 186, 186);
+  /* margin: 2px 0; */
+}
+.sidenav li:hover{
+  color:white;
+}
+.sidenav ul{
+  list-style-type:square !important;
+  margin-left: 27px;
+}
+.sidenavHeader{
+  position:relative;
+  margin-top:70px;
+  width:100%;
+  background-color: rgb(12, 12, 12);
+}
+.sidenavHeader > div{
+  /* width:20px; */
+  font-size:26px;
+  color:white;
+  padding:10px 2px;;
+  overflow: right;
+}
+.sidenavClose{
+  width:45px !important;
+  color: white;
+  margin:2px 2px !important;
+  margin-top:2% !important;
+  margin-left: 28% !important;
+  height: 45px;
+  background-color:rgb(145, 145, 145);
+}
+/* form > .bubble-r-line{
+  margin:1px 1px;
+} */
+.dataTables_scroll{
+  margin-right: 30px !important;
+}
+.dataTables_scroll > div{
+  padding-left:10px;
+}
+.row{
+  margin-right:0px;
+  margin-left:0px;
+}
+.sidenavOpen{
+  top:70px;
+  position: fixed;
+  height:43px;
+  width:50px !important;
+  color: white;
+  margin:3px 2px !important;
+  margin-left: 5px !important;
+  z-index:5;
+  display: none;
+  background-color:rgb(190, 186, 186);
+}
+
+ul{
+  padding-right: 20px !important;
+}
+.sidenavClose:focus{
+  outline-color: white !important;
+  outline: 0;
+}
+.sidenavClose:hover{
+  color:white;
 }
 .sidenav li a:hover{
   text-decoration: none;
+  color: white !important;
 }
 .A4-book > p{
-  font-size:50px;
+  font-size:30px;
   color:white;
+  padding: 10px 10px;
+  background-color:green;
 }
 .mySidenav{
   display: none;
 }
 .mySidenav button {
-  margin-top: 50px;
   position: fixed;
   right: -80px;
   transition: 0.3s;
@@ -355,7 +470,6 @@ footer{
   right: 0;
 }
 .mySidenavi button {
-  margin-top: 50px;
   position: fixed;
   right: -80px;
   transition: 0.3s;
@@ -376,17 +490,59 @@ footer{
   top: 20px;
   background-color: #3b7ebd;
 } */
+.whereEmpty button {
+  position: fixed;
+  right: 50px;
+  transition: 0.3s;
+  padding: 15px;
+  width: 100px;
+  height:100px;
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  border-radius: 30px;
+  border-width: 0;
+  z-index: 50;
+  bottom: 370px;
+  background-color:rgb(212, 150, 35);
+}
+.whereEmpty button:hover {
+  background-color: rgb(255, 168, 6);
+}
+.whereEmpty button:focus {
+  outline:none;
+  /* outline-style: groove; */
+  /* -moz-outline-radius: 30px; */
+}
+.mySidenavii button {
+  position: fixed;
+  right: 10px;
+  transition: 0.3s;
+  padding: 15px;
+  width: 100px;
+  height:50px;
+  text-decoration: none;
+  font-size: 20px;
+  color: white;
+  border-radius: 30px;
+  border-width: 0;
+  z-index: 50;
+  background-color: #3bad2c;
+  bottom: 300px;
+}
+.mySidenavii button:hover {
+  background-color: #59c24b !important;
+}
+.mySidenavii button:focus {
+  outline:none;
+}
 #print {
-  top: 20px;
+  bottom: 621px;
   background-color: #ecbe3f;
 }
 #delete {
-  top: 80px;
+  bottom: 560px;
   background-color: #c93045;
-}
-#save {
-  top: 135px;
-  background-color: #3bad2c;
 }
 .modal button {
   color: white;
@@ -423,7 +579,21 @@ footer{
   padding: 16px;
   text-align: center;
 }
-
+#newadmin .container{
+  padding: 16px;
+  text-align: center;
+}
+#newadmin{
+  padding-top:0 !important;
+}
+#newadmin > .card{
+  background-color:white;
+  width:400px;
+  margin-top:200px !important;
+}
+.modal{
+  z-index:5 !important;
+}
 /* The Modal (background) */
 .modal {
   display: none; /* Hidden by default */
@@ -450,18 +620,38 @@ footer{
 hr {
   border: 1px solid #f1f1f1;
   margin-bottom: 25px;
+  width:50%;
 }
- 
+ .landing-inner{
+  background-color:rgba(0, 0, 0, 0.5);
+  padding-top:20%;
+  height:100%;
+ }
+ .navbar-toggler{
+   margin-right:65px;
+ }
+ .navbar-collapse{
+   background-color: black;
+   margin-top:19px;
+ }
+
 /* The Modal Close Button (x) */
 .close {
-  position: absolute;
+  position: fixed;
   right: 35px;
-  top: 15px;
+  top: 70px;
   font-size: 40px;
   font-weight: bold;
   color: #f1f1f1;
 }
-
+.navbar-nav li{
+  padding: 0px;
+}
+.navbar-nav{
+  margin-right: 4%;
+  margin-left: auto;
+  padding-left: 4%;
+}
 .close:hover,
 .close:focus {
   color: #f44336;
@@ -480,6 +670,28 @@ hr {
      width: 100%;
   }
 }
+@media screen and (max-width: 576px){
+  .navbar-expand-sm .navbar-collapse{
+      margin-left: -20px;
+    }
+  .container{
+    width:auto;
+  }
+}
+@media screen and (min-width: 576px){
+  .navbar-expand-sm .navbar-collapse{
+      margin-right: 4%;
+  }
+}
+@media screen and (max-width: 400px){
+  .navbar{
+      margin-left: -20px;
+      padding: 30px;
+    }
+  .navbar-collapse{
+    margin-top:5px;
+  }
+}
 .loading{
   position: fixed;
   top: 0;
@@ -489,4 +701,59 @@ hr {
   z-index:10;
   color: white;
   display: none;
+}
+.leftcolumn {   
+  float: left;
+  width: 25%;
+  height:100%;
+  /* background-color:red; */
+}
+/* Right column */
+.chcolumn {
+  position: relative;
+  width: 100%;
+}
+.acccolumn {
+  position:relative;
+  margin-top:5px;
+  margin-bottom:50px;
+  float: left;
+  width: 100%;
+}
+.chcolumn > .card > div > span > input{
+  width:30%;
+}
+.acccolumn > .card > div > span > input{
+  width:30%;
+}
+.pagination{
+  right:0px;
+}
+.admin{
+  position:absolute;
+  width:100%;
+  padding:50px 0;
+  background-color:rgb(189, 187, 187);
+}
+.admindashboard{
+  position:relative;
+  margin-top:50px;
+  /* height:100%; */
+}
+.row:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+@media screen and (max-width: 800px) {
+  .leftcolumn, .rightcolumn {   
+    width: 100%;
+    padding: 0;
+  }
+}
+.card {
+  background-color: white;
+  padding:10px 10px !important;
+  margin:0px 5px;
+  box-shadow: black;
 }

@@ -4,8 +4,8 @@ import errorReducer from './errorReducer';
 import answerReducer from './answerReducer';
 import problemReducer from './problemReducer';
 import adminmReducer from './adminReducer';
-import sideMapReducer from './sideMapReducer';
 import userinfoReducer from './userinfoReducer';
+import allchildrenReducer from './allchildrenReducer';
 
 export default combineReducers({
   auth: authReducer,
@@ -13,6 +13,6 @@ export default combineReducers({
   answer: answerReducer,
   problems: problemReducer,
   admin: adminmReducer,
-  sidemaps: sideMapReducer,
-  userinfo: userinfoReducer
+  userinfo: userinfoReducer,
+  allchildren: allchildrenReducer
 });

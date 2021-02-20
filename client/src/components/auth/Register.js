@@ -15,7 +15,7 @@ class Register extends Component {
       password: '',
       password2: '',
       errors: {},
-      role:'teacher'
+      role:'user'
     };
 
     this.onChange = this.onChange.bind(this);
@@ -63,16 +63,16 @@ class Register extends Component {
     return (
       <div className="register">
         <div className="container">
-          <div className="row mt-10">
+          <div className="row mt-8">
             <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center text-light">Sign Up</h1>
-              <p className="lead text-center text-light">
+              <h1 className="display-4 text-center">Sign Up</h1>
+              <p className="lead text-center">
                 Create your new account
               </p>
               <br/>
               <form noValidate onSubmit={this.onSubmit}>
                 <TextFieldGroup
-                  placeholder="Name"
+                  placeholder="Full Name"
                   name="name"
                   value={this.state.name}
                   onChange={this.onChange}

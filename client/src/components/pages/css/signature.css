@@ -1,0 +1,52 @@
+.signature {
+    text-align: center;
+  }
+  
+  .signature-logo {
+    animation: Signature-logo-spin infinite 20s linear;
+    height: 40vmin;
+    pointer-events: none;
+  }
+  
+  .signature-header {
+    background-color: #282c34;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: calc(10px + 2vmin);
+    color: white;
+  }
+  
+  .signature-link {
+    color: #61dafb;
+  }
+  
+  @keyframes signature-logo-spin {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+  .signatureCanvas {
+    /* border: 1px solid black; */
+    border-radius: 5px 5px;
+    width: 100%;
+    min-height: 100px;
+    background-color: rgb(255, 255, 255) !important;
+  }
+  .signature button{
+    margin: 2px
+  }
+  .popup-content{
+    background-color:rgba(201, 201, 201, 0.5) !important;
+    border-radius: 3px 3px;
+  }
+  .signature button:focus{
+    outline: none !important;
+  }
+
+

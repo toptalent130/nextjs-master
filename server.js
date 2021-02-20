@@ -6,7 +6,7 @@ const path = require('path');
 require('./models/seed');
 
 const users = require('./routes/api/users');
-const sidemap = require('./routes/api/map');
+const admins = require('./routes/api/admins');
 const userinfos = require('./routes/api/userinfo');
 const test = require('./routes/api/test');
 
@@ -33,7 +33,7 @@ require('./config/passport')(passport);
 
 // Use Routes
 app.use('/api/users', users);
-app.use('/api', sidemap);
+app.use('/api/admins', admins);
 app.use('/api', userinfos);
 app.use('/api', test);
 
