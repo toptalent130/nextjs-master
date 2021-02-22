@@ -3,12 +3,9 @@ const mongoose = require('mongoose');
 const bodyParser = require('body-parser');
 const passport = require('passport');
 const path = require('path');
-require('./models/seed');
+// require('./models/seed');
 
 const users = require('./routes/api/users');
-const admins = require('./routes/api/admins');
-const userinfos = require('./routes/api/userinfo');
-const test = require('./routes/api/test');
 
 const app = express();
 
@@ -33,9 +30,6 @@ require('./config/passport')(passport);
 
 // Use Routes
 app.use('/api/users', users);
-app.use('/api/admins', admins);
-app.use('/api', userinfos);
-app.use('/api', test);
 
 // Server static assets if in production
 if (process.env.NODE_ENV === 'production') {

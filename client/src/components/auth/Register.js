@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { registerUser } from '../../actions/authActions';
+import { Link } from 'react-router-dom';
 // import { createUserInfo } from '../../actions/userinfoActions';
 import TextFieldGroup from '../common/TextFieldGroup';
 
@@ -61,12 +62,10 @@ class Register extends Component {
   render() {
     const { errors } = this.state;
     return (
-      <div className="register">
-        <div className="container">
-          <div className="row mt-8">
-            <div className="col-md-8 m-auto">
-              <h1 className="display-4 text-center">Sign Up</h1>
-              <p className="lead text-center">
+      <div className="landing">
+        <div className="register container">
+              <h1 className="display-4 text-center text-light">Sign Up</h1>
+              <p className="text-light text-center">
                 Create your new account
               </p>
               <br/>
@@ -107,12 +106,13 @@ class Register extends Component {
                   <input type="checkbox" name="teacher" defaultChecked={false} onClick={this.onClick}/> <span className="mr-5">Teacher</span>
                   <input type="checkbox" name="student" defaultChecked={false} onClick={this.onClick1}/> <span>Student</span>
                 </div> */}
-                <input type="submit" className="btn btn-info btn-block mt-4 mb-5"/>
+                <input type="submit" className="btn btn-primary btn-block mt-4 mb-5"/>
+                <Link to="/login"><p className="text-center text-light">
+                  Sign in
+                </p></Link>
               </form>
             </div>
           </div>
-        </div>
-      </div>
     );
   }
 }
