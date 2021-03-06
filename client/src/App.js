@@ -14,7 +14,7 @@ import Login from './components/auth/Login';
 import Dashboard from './components/dashboard/Dashboard';
 import '../../node_modules/bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
-localStorage.removeItem('jwtToken');
+// localStorage.removeItem('jwtToken');
 if (localStorage.jwtToken) {
   // Set auth token header auth
   // Decode token and get user info and exp

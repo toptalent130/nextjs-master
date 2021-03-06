@@ -16,6 +16,78 @@ const User = require('../../models/User');
 // @route   POST api/users/register
 // @desc    Register user
 // @access  Public
+router.get('/get_managers', (req, res)=>{
+  User.find().then((users)=>{
+    res.json(users);
+  }).catch(err => {
+    let errors;
+    errors.managers = err;
+    res.status(400).json(errors)
+  });
+})
+router.post('/delete_manager', (req, res) => {
+  User.findOneAndDelete({email:req.body.email}).then(()=>{
+    User.find().then((users)=>{
+      res.json(users);
+    }).catch(err => {
+      let errors;
+      errors.managers = err;
+      res.status(400).json(errors)
+    });
+  });
+});
+router.post('/update_manager', (req, res) => {
+  let role = "user";
+    if(req.body.role === true){
+        role = "manager";
+    }
+    User.findOneAndUpdate({email:req.body.email}, {role: role}, {upsert: true}, function(err, result) {
+      User.find().then((users)=>{
+        res.json(users);
+      }).catch(err => {
+        let errors;
+        errors.managers = err;
+        res.status(400).json(errors)
+      });
+    });
+});
+router.post('/register_manager', (req, res) => {
+  let errors={};
+  User.findOne({ email: req.body.email }).then(user => {
+    if (user) {
+      errors.email = 'Email already exists';
+      return res.status(400).json(errors);
+    } else {
+      const avatar = gravatar.url(req.body.email, {
+        s: '200', // Size
+        r: 'pg', // Rating
+        d: 'mm' // Default
+      });
+      const newUser = new User({
+        name: req.body.name,
+        email: req.body.email,
+        avatar,
+        password: req.body.password,
+        role: req.body.role
+      });
+      bcrypt.genSalt(10, (err, salt) => {
+        bcrypt.hash(newUser.password, salt, (err, hash) => {
+          if (err) throw err;
+          newUser.password = hash;
+          new User(newUser).save().then(()=>{
+              User.find().then((users)=>{
+                res.json(users);
+              }).catch(err => {
+                let errors;
+                errors.managers = err;
+                res.status(400).json(errors)
+              });
+            }).catch(err => console.log(err));
+        });
+      });
+    }
+  });
+});
 router.post('/register', (req, res) => {
   const { errors, isValid } = validateRegisterInput(req.body);
 
@@ -117,23 +189,6 @@ router.get(
     });
   }
 );
-router.post('/register/userinfo', (req, res) => {
-  // Check Validation
-  if (!isValid) {
-    return res.status(400).json(errors);
-  }
-  UserInfo.findOne({ usrid: req.body.userid }).then(userinfo => {
-    if (user) {
-      // errors.userinfo = 'UserInfo already exists';
-      return res.json(userinfo);
-    } else {
-      const newUser = new UserInfo({
-        userid: req.body.userid,
-      });
-      new UserInfo(newUser).save().then(profile => res.json(profile))
-          .catch(err => console.log(err));
-    }
-  });
-});
+
 
 module.exports = router;

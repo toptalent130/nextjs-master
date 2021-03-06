@@ -3,3 +3,5 @@ export const CLEAR_ERRORS = 'CLEAR_ERRORS';
 export const SET_CURRENT_USER = 'SET_CURRENT_USER';
 export const POST_LOADING = 'POST_LOADING';
 export const CANCEL_ABLETST = 'CANCEL_ABLETST';
+export const GET_MANAGERS = 'GET_MANAGERS';
+export const SIDEBAR_STATES = 'SIDEBAR_STATES';

@@ -3,6 +3,7 @@ import React from "react";
 import { useTable, useFilters, useGlobalFilter, usePagination} from 'react-table'
 import debounce from 'async-debounce';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import PropTypes from 'prop-types';
 
 // Define a default UI for filtering
 function GlobalFilter({
@@ -102,7 +103,7 @@ function Table({ columns, data }) {
                                 <th {...column.getHeaderProps()}>
                                     {column.render('Header')}
                                     {/* Render the columns filter UI */}
-                                    <div>{column.canFilter && ('RoleOpenEditDelete'.indexOf(column.Header)<0)? column.render('Filter') : null}</div>
+                                    <div>{column.canFilter && ('ManagerOpenEditDelete'.indexOf(column.Header)<0)? column.render('Filter') : null}</div>
                                 </th>
                             ))}
                         </tr>

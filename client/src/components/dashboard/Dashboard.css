@@ -1,0 +1,23 @@
+.dashboard{
+    height:100%;
+    width:100%;
+    background-color: rgb(189, 188, 188);
+    overflow-x: hidden;
+}
+.chart-board{
+    height:100%;
+    margin-left:300px;
+    transition: 0.5s;
+    padding:100px;
+}
+.lineChart{
+    /* background: rgb(17, 17, 17); */
+    padding: 20px 20px !important;
+}
+.recharts-wrapper{
+    background: rgb(0, 0, 0);
+    border-radius: 5px;
+}
+@media screen and (max-width: 1065px) {
+    .chart-board {margin-left: 0px;}
+}

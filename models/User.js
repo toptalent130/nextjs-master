@@ -20,8 +20,8 @@ const UserSchema = new Schema({
     type: String
   },
   role: {
-    type: Number,
-    default: 1
+    type: String,
+    default: "user"
   },
   date: {
     type: Date,

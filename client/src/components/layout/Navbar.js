@@ -3,33 +3,19 @@ import { Link } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import { logoutUser } from '../../actions/authActions';
+import { sidebar_States } from '../../actions/sidebarActions';
+import "./Navbar.css";
 
 class Navbar extends Component {
-  onLogoutClick(e) {
+  onLogoutClick = async(e) => {
     e.preventDefault();
-    this.props.logoutUser();
+    await this.props.sidebar_States({type:"setting"});
+    await this.props.logoutUser();
   }
   render() {
     const { isAuthenticated, user } = this.props.auth;
-    // let contentnav;
-    // contentnav=(
-    //   <li className="nav-item">
-    //       <div className="dropdown">
-    //         <button className="btn btn-primary dropdown-toggle btn btn-success" type="button" data-toggle="dropdown">NEW
-    //         <span className="caret"></span></button>
-    //         <ul className="dropdown-menu text-center">
-    //           <li><a href="#">Less Than 2years</a></li>
-    //           <li><a href="#">Greater Than 2years</a></li>
-    //         </ul>
-    //       </div>
-    //       <button className="btn btn-success" to="/save">SAVE</button>
-    //       <button className="btn btn-danger" to="/delete">DELETE</button>
-    //       <button className="btn btn-warning" to="/pdf">PRINT PDF</button>
-    //   </li>
-    // )
     const authLinks = (
       <ul className="navbar-nav ml-auto">
-        {/* { contentnav } */}
         <li className="nav-item">
           <a
             href=""
@@ -66,11 +52,11 @@ class Navbar extends Component {
     );
 
     return (
-      <nav className="navbar navbar-expand-sm navbar-dark bg-dark mb-4">
-        <div className="container">
-          <Link className="navbar-brand" to="/">
-            <span>PreSchool</span> Adminsion
-          </Link>
+      <nav className="navbar navbar-expand-sm">
+          {/* <Link className="navbar-brand" to="/">
+            <span>LIVEData</span>Analysis 
+          </Link> */}
+            <button className="btn sidenavOpen navbar-brand">{'☰'}</button>
           <button
             className="navbar-toggler"
             type="button"
@@ -83,7 +69,6 @@ class Navbar extends Component {
           <div className="collapse navbar-collapse" id="mobile-nav">
             {isAuthenticated ? authLinks : guestLinks}
           </div>
-        </div>
       </nav>
     );
   }
@@ -91,6 +76,7 @@ class Navbar extends Component {
 
 Navbar.propTypes = {
   logoutUser: PropTypes.func.isRequired,
+  sidebar_States: PropTypes.func.isRequired,
   auth: PropTypes.object.isRequired
 };
 
@@ -98,6 +84,6 @@ const mapStateToProps = state => ({
   auth: state.auth
 });
 
-export default connect(mapStateToProps, { logoutUser })(
+export default connect(mapStateToProps, { logoutUser, sidebar_States })(
   Navbar
 );

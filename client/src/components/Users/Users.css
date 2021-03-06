@@ -1,0 +1,87 @@
+.managerTable{
+    margin: 50px;
+    /* background: grey; */
+    padding: 50px;
+    border-radius: 5px;
+    width:1400px;
+}
+#newadmin .container{
+    padding: 16px;
+    text-align: center;
+  }
+#newadmin{
+    padding-top:0 !important;
+    background-color: rgba(0, 0, 0, 0.7);
+}
+#newadmin > .card{
+    background-color: rgba(0, 0, 0, 0.5);
+    width:600px;
+    margin-top:200px !important;
+    padding: 20px;
+    border-radius: 10px;
+}
+#newadmin .close{
+    margin:70px 20px;
+    font-size: 30px;
+    color:white;
+}
+#id04 .close{
+    margin:10px 20px;
+    font-size: 30px;
+    color:white;
+}
+.close:hover{
+    cursor:pointer;
+    color:red;
+}
+#id04 .container {
+    padding: 16px;
+    text-align: center;
+  }
+  .modal{
+    z-index:5 !important;
+  }
+  /* The Modal (background) */
+  .modal {
+    display: none; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 10; /* Sit on top */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgba(0, 0, 0, 0.7);
+    padding-top: 50px;
+  }
+  
+/* Modal Content/Box */
+.modal-content {
+    /* background-color: #fefefe;
+     */
+    background-color: rgba(0, 0, 0, 0.5);
+    margin: 5% auto 15% auto; /* 5% from the top, 15% from the bottom and centered */
+    /* border: 1px solid #888; */
+    width: 60%; /* Could be more or less, depending on screen size */
+}
+.modal button:hover {
+opacity:0.8;
+}
+.cancelbtn, .deletebtn {
+    float: left;
+    width: 48%;
+  }
+  
+  /* Add a color to the cancel button */
+  .cancelbtn {
+    background-color: #ccc;
+    color: black;
+  }
+  
+  /* Add a color to the delete button */
+  .deletebtn {
+    background-color: #f44336;
+  }
+  .modal-content h2,.modal-content p{
+      color:white;
+  }
