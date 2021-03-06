@@ -1,39 +1,16 @@
-# DevConnector
+# Next.js + Tailwind Starter Project
 
-> Small social network app built with the MERN stack. This is part of my "MERN Stack Front To Back" Udemy course
+A bare Next.js project with Tailwind CSS installed.
 
-## Quick Start
+[**Check out the guide →**](https://statickit.com/guides/next-js-tailwind)
 
-```bash
-# Install dependencies for server
-npm install
+## Usage
 
-# Install dependencies for client
-npm run client-install
+To run this code:
 
-# Run the client & server with concurrently
-npm run dev
-
-# Run the Express server only
-npm run server
-
-# Run the React client only
-npm run client
-
-# Server runs on http://localhost:5000 and client on http://localhost:3000
 ```
-
-## App Info
-
-### Author
-
-Brad Traversy
-[Traversy Media](http://www.traversymedia.com)
-
-### Version
-
-1.0.0
-
-### License
-
-This project is licensed under the MIT License
+git clone https://github.com/unstacked/next-js-tailwind.git
+cd next-js-tailwind
+npm install
+npm run dev
+```
